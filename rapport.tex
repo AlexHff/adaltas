@@ -144,6 +144,48 @@
   description={Langage de programmation de scripts principalement employé dans les pages web interactives mais aussi pour les serveurs}
 }
 
+\newglossaryentry{npm}
+{
+  name=npm,
+  description={Gestionnaire de paquets officiel de \gls{nodejs}}
+}
+
+\newglossaryentry{yarn}
+{
+  name=yarn,
+  description={Gestionnaire de paquets de \gls{nodejs}}
+}
+
+\newglossaryentry{coffeescript}
+{
+  name=CoffeeScript,
+  description={Langage de programmation qui se compile en JavaScript. Le langage ajoute du sucre syntaxique afin d'améliorer la brièveté et la lisibilité du \gls{javascript}}
+}
+
+\newglossaryentry{dsl}
+{
+  name=DSL,
+  description={Domain Specific Language - Langage de programmation dont les spécifications sont conçues pour répondre aux contraintes d’un domaine d'application précis}
+}
+
+\newglossaryentry{docker}
+{
+  name=Docker,
+  description={Logiciel libre permettant de lancer des applications dans des conteneurs logiciels}
+}
+
+\newglossaryentry{yaml}
+{
+  name=YAML,
+  description={Format de représentation de données par sérialisation \gls{unicode}}
+}
+
+\newglossaryentry{unicode}
+{
+  name=Unicode,
+  description={Standard informatique qui permet des échanges de textes dans différentes langues}
+}
+
 \begin{titlepage}
 \title{	\includegraphics[scale=0.4]{assets/img/logo-adaltas.png}\\[1 cm]
 		\normalsize \textsc{Rapport de stage}\\[0.8cm]
@@ -289,9 +331,46 @@ nikita.call({
 \label{code:example}
 \end{figure}
 
+\subsection{Les packages}
+
+Comme évoqué précédemment, Nikita est divisé en plusieurs packages. Chaque package a un domaine d'application spécifique. Par exemple, le package \texttt{core} comporte les actions génériques, il permet de travailler sur des objets \gls{javascript}, modifier des fichiers, etc. Le package \texttt{docker} contient des actions liées à \gls{docker}. Le package \texttt{file}, que je suis chargé de migrer, comporte des actions permettant de travailler sur le système de fichier. Par exemple, nous pouvons y trouver des fonctions pour créer un fichier, supprimer un répertoire, télécharger un document, etc.
+
+\subsection{Les actions}
+
+Une action est un élément fondamental dans Nikita. Il s'agit essentiellement d'une fontion que nous appelons \texttt{handler} et des metadonnées associées appelées \texttt{options} ou \texttt{config}. Les actions génériques et bas niveau se situent dans le package \texttt{engine}. Par exemple, dans \texttt{engine/src/actions/fs/base/mkdir.coffee.md}, nous trouvons l'action \texttt{mkdir} qui permet de créer un répertoire.
+
 \section{Prise en main de Nikikta}
 
-Ma première activité consistait à comprendre la logique de Nikita. Pour pouvoir m'approprier et faire évoluer ce logiciel, il me fallait tout d'abord comprendre sa manière de fonctionner.
+Ma première activité consistait à comprendre la logique de Nikita. Pour pouvoir m'approprier et faire évoluer ce logiciel, il me fallait tout d'abord comprendre sa manière de fonctionner. Pour ce faire, j'ai dans un premier temps suivi les instructions du tutoriel\footnote{\href{https://nikita.js.org/about/tutorial/}{https://nikita.js.org/about/tutorial/}} disponible sur le site internet. L'utilisation de Nikita nécessite l'installation de \gls{nodejs} et de \gls{npm} ou \gls{yarn}. Ayant déjà utilisé ces technologies dans plusieurs cours dispensés à l'ECE, j'étais déjà familié avec l'environnement de développement de Nikita fort de quoi j'ai pu avancer à un rythme plus soutenu durant ce tutoriel. Le fonctionnement de Nikita est fondé autour des fichiers. Toutes les actions de la librairie touchent de près ou de loin à un fichier. Ainsi, il est possible de suivre le déroulement d'une session Nikita en observant les modifications effectuées sur les différents fichiers.
+
+Nikita est executé par le moteur \gls{nodejs}. Cela signifie que le développement du logiciel nécessite des connaissances en \gls{javascript}. Fort heureusement, les enseignements de l'ECE couvrent également les bases de ce langage de programmation. De surcroît, j'ai utilisé à titre personnel le langage \gls{javascript} pour plusieurs projets. J'avais donc des fondations solides pour me lancer dans le code source. C'est en tout cas ce que je pensais. Il s'avère que, même s'il est possible d'utiliser Nikita en travaillant en \gls{javascript}, le code source est écrit en \gls{coffeescript}, un langage de programmation, qui se compile en \gls{javascript}. En d'autres termes, le code écrit en \gls{coffeescript} est transformé en \gls{javascript}. Cela étant dit, les syntaxes entres ces deux langages sont très similaires comme le montre la figure \ref{code:jscoffeecomparison}.
+
+\begin{figure}[H]
+\begin{minipage}{0.45\textwidth}
+\begin{lstlisting}[language=JavaScript]
+a = 2
+square = (x) -> x * x
+b = square a
+console.log b // 4
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{0.45\textwidth}
+\begin{lstlisting}[language=JavaScript]
+var a, b, square;
+a = 2
+square = function(x) {
+  return x * x;
+};
+b = square(a);
+console.log(b); // 4
+\end{lstlisting}
+\end{minipage}\hfill
+\centering
+\caption{Comparaison de code \gls{javascript} et \gls{coffeescript}}
+\label{code:jscoffeecomparison}
+\end{figure}
+
+\gls{coffeescript} a une syntaxe très claire et se prête parfaitement à l'aspect déclaratif de Nikita. Somme toute, le code source ressemble à du \gls{yaml}, ce qui le rend beaucoup plus lisible tout en préservant les avantages d'un langage procédural tel que le \gls{javascript}. Un autre avantage de \gls{coffeescript} est qu'il permet d'intégrer la documentation liée à une action directement dans le code source.
 
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
