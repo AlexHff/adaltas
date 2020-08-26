@@ -192,6 +192,12 @@
   description={Système d'exploitation Linux simple et sans outils de configuration destiné aux utilisateurs avancés}
 }
 
+\newglossaryentry{api}
+{
+  name=API,
+  description={Ensemble normalisé de classes, de méthodes, de fonctions et de constantes qui sert de façade par laquelle un logiciel offre des services à d'autres logiciels}
+}
+
 \begin{titlepage}
 \title{	\includegraphics[scale=0.4]{assets/img/logo-adaltas.png}\\[1 cm]
 		\normalsize \textsc{Rapport de stage}\\[0.8cm]
@@ -297,8 +303,6 @@ La réponse d'Adaltas face à l'épidémie de Covid-19 qui a touché la France a
 
 \chapter{Présentation de la mission}
 
-Cette partie décrit les activités réalisées dans le cadre du stage. La plupart d'entre elles ont été réalisées en parallèle. La description "chronologique" qui suit est donc très relative.
-
 La mission principale de mon stage se concentrait autour du développement du logiciel d'automatisation de déploiement Nikita. Plus précisément, il s'agissait de migrer plusieurs packages, modules et actions ainsi que de refactor une partie du code vers une nouvelle version du logiciel.
 
 \section{Cahier des charges}
@@ -325,6 +329,8 @@ Le découpage temporel des missions proposé au début du stage est décrit sur 
 \end{figure}
 
 \chapter{Déroulement de la mission}
+
+Cette partie décrit les activités réalisées dans le cadre du stage. La plupart d'entre elles ont été réalisées en parallèle. La description "chronologique" qui suit est donc très relative.
 
 \section{Présentation de Nikita}
 
@@ -357,7 +363,7 @@ Une action est un élément fondamental dans Nikita. Il s'agit essentiellement d
 
 \section{Prise en main de Nikikta}
 
-Ma première activité consistait à comprendre la logique de Nikita. Pour pouvoir m'approprier et faire évoluer ce logiciel, il me fallait tout d'abord comprendre sa manière de fonctionner. Pour ce faire, j'ai dans un premier temps suivi les instructions du tutoriel\footnote{\href{https://nikita.js.org/about/tutorial/}{https://nikita.js.org/about/tutorial/}} disponible sur le site internet. L'utilisation de Nikita nécessite l'installation de \gls{nodejs} et de \gls{npm} ou \gls{yarn}. Ayant déjà utilisé ces technologies dans plusieurs cours dispensés à l'ECE, j'étais déjà familié avec l'environnement de développement de Nikita fort de quoi j'ai pu avancer à un rythme plus soutenu durant ce tutoriel. Le fonctionnement de Nikita est fondé autour des fichiers. Toutes les actions de la librairie touchent de près ou de loin à un fichier. Ainsi, il est possible de suivre le déroulement d'une session Nikita en observant les modifications effectuées sur les différents fichiers.
+Ma première activité consistait à comprendre la logique de Nikita. Pour pouvoir m'approprier et faire évoluer ce logiciel, il me fallait tout d'abord comprendre sa manière de fonctionner. Pour ce faire, j'ai dans un premier temps suivi les instructions du tutoriel\footnote{\href{https://nikita.js.org/about/tutorial/}{https://nikita.js.org/about/tutorial/}} disponible sur le site internet. L'utilisation de Nikita nécessite l'installation de \gls{nodejs} et de \gls{npm} ou \gls{yarn}. Ayant déjà utilisé ces technologies dans plusieurs cours dispensés à l'ECE, j'étais familié avec l'environnement de développement de Nikita fort de quoi j'ai pu avancer à un rythme plus soutenu durant ce tutoriel. Le fonctionnement de Nikita est fondé autour des fichiers. Toutes les actions de la librairie touchent de près ou de loin à un fichier. Ainsi, il est possible de suivre le déroulement d'une session Nikita en observant les modifications effectuées sur les différents fichiers.
 
 Nikita est executé par le moteur \gls{nodejs}. Cela signifie que le développement du logiciel nécessite des connaissances en \gls{javascript}. Fort heureusement, les enseignements de l'ECE couvrent également les bases de ce langage de programmation. De surcroît, j'ai utilisé à titre personnel le langage \gls{javascript} pour plusieurs projets. J'avais donc des fondations solides pour me lancer dans le code source. C'est en tout cas ce que je pensais. Il s'avère que, même s'il est possible d'utiliser Nikita en travaillant en \gls{javascript}, le code source est écrit en \gls{coffeescript}, un langage de programmation, qui se compile en \gls{javascript}. En d'autres termes, le code écrit en \gls{coffeescript} est transformé en \gls{javascript}. Cela étant dit, les syntaxes entres ces deux langages sont très similaires comme le montre la figure \ref{code:jscoffeecomparison}.
 
@@ -373,7 +379,7 @@ console.log b // 4
 \begin{minipage}{0.45\textwidth}
 \begin{lstlisting}[language=JavaScript]
 var a, b, square;
-a = 2
+a = 2;
 square = function(x) {
   return x * x;
 };
@@ -388,7 +394,7 @@ console.log(b); // 4
 
 \gls{coffeescript} a une syntaxe très claire et se prête parfaitement à l'aspect déclaratif de Nikita. Somme toute, le code source ressemble à du \gls{yaml}, ce qui le rend beaucoup plus lisible tout en préservant les avantages d'un langage procédural tel que le \gls{javascript}. Un autre avantage de \gls{coffeescript} est qu'il permet d'intégrer la documentation liée à une action directement dans le code source.
 
-Ma première mission pour prendre en main Nikita était la migration d'une action de Nikita Arch\footnote{\href{https://github.com/adaltas/node-nikita-arch}{https://github.com/adaltas/node-nikita-arch}}, un logiciel de déploiement pour le système d'exploitation \gls{arch}, vers Nikita \texttt{core}. Les actions contenues dans le dépôt Nikita Arch sont indépendantes et, de façon générale, plus simple que celles sur Nikita. J'ai ainsi pu me familiariser avec la logique et syntaxe du logiciel.
+Ma première mission pour prendre en main Nikita était la migration d'une action de Nikita Arch\footnote{\href{https://github.com/adaltas/node-nikita-arch}{https://github.com/adaltas/node-nikita-arch}}, un logiciel de déploiement pour le système d'exploitation \gls{arch}, vers Nikita dans le package \texttt{core}. Les actions contenues dans le dépôt Nikita Arch sont indépendantes et, de façon générale, plus simple que celles sur Nikita. J'ai ainsi pu me familiariser avec la logique et syntaxe du logiciel. Dans ce cas précis, je n'ai pas eu à écrire de nouveau code. Je devais prendre le code existant, le copier vers le package \texttt{core} et modifier certaines lignes relatives à l'environnement d'exécution. J'étais également chargé d'écrire des tests unitaires. Il s'agit d'une procédure permettant de vérifier le bon fonctionnement d'une partie précise du logiciel (appelée « unité » ou « module »). Reprenons l'exemple de la figure \ref{code:jscoffeecomparison}. Ce code décrit une fonction \texttt{square} dont le but est d'élever au carré l'entier qui est passé par paramètre. Le test unitaire le plus basique serait de vérifier que si l'on envoie le chiffre 3 dans cette fonction, cette dernière retourne le chiffre 9. L'objectif final est de "blinder" le code, c'est-à-dire vérifier qu'il se comporte comme le développeur l'a prévu. L'éciture de tests unitaires permet de trouver rapidement les erreurs au sein du code, de sécuriser la maintenance et finalement de documenter le code. Ils peuvent servir de complément à l'\gls{api}, il est très utile de lire les tests pour comprendre comment s'utilise une méthode. De plus, il est possible que la documentation ne soit plus à jour, mais les tests eux correspondent à la réalité de l'application. C'est d'ailleurs ce que m'avait conseillé mon maître de stage durant ma montée en compétences sur le logiciel Nikita.
 
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
