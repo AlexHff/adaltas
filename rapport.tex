@@ -198,6 +198,30 @@
   description={Ensemble normalisé de classes, de méthodes, de fonctions et de constantes qui sert de façade par laquelle un logiciel offre des services à d'autres logiciels}
 }
 
+\newglossaryentry{pacman}
+{
+  name=pacman,
+  description={Gestionnaire de paquets d'\gls{arch}}
+}
+
+\newglossaryentry{dpkg}
+{
+  name=dpkg,
+  description={Gestionnaire de paquets de \gls{debian}}
+}
+
+\newglossaryentry{debian}
+{
+  name=Debian,
+  description={Système d'exploitation libre basé sur Linux}
+}
+
+\newglossaryentry{gnu}
+{
+  name=GNU,
+  description={Système d'exploitation constitué de logiciel libre}
+}
+
 \begin{titlepage}
 \title{	\includegraphics[scale=0.4]{assets/img/logo-adaltas.png}\\[1 cm]
 		\normalsize \textsc{Rapport de stage}\\[0.8cm]
@@ -328,6 +352,28 @@ Le découpage temporel des missions proposé au début du stage est décrit sur 
 \label{fig:planning}
 \end{figure}
 
+\section{Environnement de travail}
+
+Comme évoqué précédemment, la plus grande partie de mon stage s'est déroulée en télé-travail. Lors des rares occasions durant lesquelles je me suis rendu au bureau, j'ai pu rencontrer et intéragir de façon privilégiée avec les différentes collaborateurs. Les locaux se situent temporairement à Boulogne-Billancourt, près du Pont de Sèvres, dans un bâtiment qui loue des espaces de travail. Les bureaux à Meudon sont en cours de construction. De façon générale, seuls David, Prisca et les stagiaires sont présents dans les locaux étant donné que les consultants sont en mission chez les clients.
+
+Adaltas a suivi toutes les recommandations des collectivités locales et de l’Organisation mondiale de la Santé (OMS) pour mettre en place des mesures d’hygiène et de distanciation physique dans les locaux, afin d’offrir à ses collaborateurs un environnement de travail plus sûr. Ainsi, nous avons dû nous organisé à l'avance pour déterminer qui se rendra au bureau chaque jour.
+
+Les employés d’Adaltas ont des échanges quotidiens via le chat interne de l’entreprise (Keybase\footnote{\href{https://keybase.io/}{https://keybase.io/}}) et nous avons pu solliciter les expertises de chacun lorsque nous avons rencontré des difficultés.
+
+Nous avions un meeting tous les deux jours, à savoir les lundis, mercredis et vendredis, pour faire un point sur l'avancée de nos missions. Cette réunion dure entre 15 et 20 minutes. Chaque membre de l'équipe prend la parole à tour de rôle et décrit au reste de l’équipe ce qu’il a fait la veille, les objectifs qui ont été atteints, ce qu’il prévoit de faire aujourd’hui avec les nouveaux objectifs à atteindre, et les éventuels problèmes ou blocages qu’il rencontre. De cette façon, il est facile de savoir qui peut lui venir en aide et comment, afin de résoudre ses problèmes et de lui permettre d’avancer de nouveau.
+
+\section{Environnement de développement}
+
+Pour venir à bout de ma mission, Adaltas a mis à ma disposition un ordinateur à la pointe de la technologie. Il s'agit d'une machine de la marque Dell comportant les caratéristiques suivantes :
+
+\begin{itemize}
+  \item[--] Processeur Intel Core i7-9750H de 9e génération;
+  \item[--] Disque SSD hautes performances M.2 PCIE 40 de 1 To;
+  \item[--] 32 Go de mémoire, 2 x 16 Go, DDR4 à 2 666 MHz.\\
+\end{itemize}
+
+Ces spécifications techniques sont nécessaires car les stagiaires sont amenés à créer des clusters Big Data avec plusieurs noeuds. Au début de mon stage, j’ai dû installer \gls{arch} sur cet ordinateur. L’installation  est d’habitude assez périlleuse car il faut installer beaucoup de services manuellement (notamment les services réseaux et l’interface graphique). Pour faire face à cela, Adaltas a développé une solution nommée Nikita Arch\footnote{\href{https://github.com/adaltas/node-nikita-arch}{https://github.com/adaltas/node-nikita-arch}}, un logiciel de déploiement pour le système d'exploitation \gls{arch}. \gls{arch} est plus simple que Debian ou Ubuntu car \gls{pacman} ne touche pas à la configuration des paquets (ce que fait \gls{dpkg}). \gls{arch} est plus tolérant que Debian à propos des paquets "non-libres" tels que définis par \gls{gnu}. Il est optimisé pour x86\_64, et donc est plus rapide que Debian (i386). Les paquets d'\gls{arch} sont plus récents que les paquets Debian. En revanche Debian est largement plus stable, c'est pour ça que l'on utilise souvent pour les serveurs.
+
 \chapter{Déroulement de la mission}
 
 Cette partie décrit les activités réalisées dans le cadre du stage. La plupart d'entre elles ont été réalisées en parallèle. La description "chronologique" qui suit est donc très relative.
@@ -394,7 +440,7 @@ console.log(b); // 4
 
 \gls{coffeescript} a une syntaxe très claire et se prête parfaitement à l'aspect déclaratif de Nikita. Somme toute, le code source ressemble à du \gls{yaml}, ce qui le rend beaucoup plus lisible tout en préservant les avantages d'un langage procédural tel que le \gls{javascript}. Un autre avantage de \gls{coffeescript} est qu'il permet d'intégrer la documentation liée à une action directement dans le code source.
 
-Ma première mission pour prendre en main Nikita était la migration d'une action de Nikita Arch\footnote{\href{https://github.com/adaltas/node-nikita-arch}{https://github.com/adaltas/node-nikita-arch}}, un logiciel de déploiement pour le système d'exploitation \gls{arch}, vers Nikita dans le package \texttt{core}. Les actions contenues dans le dépôt Nikita Arch sont indépendantes et, de façon générale, plus simple que celles sur Nikita. J'ai ainsi pu me familiariser avec la logique et syntaxe du logiciel. Dans ce cas précis, je n'ai pas eu à écrire de nouveau code. Je devais prendre le code existant, le copier vers le package \texttt{core} et modifier certaines lignes relatives à l'environnement d'exécution. J'étais également chargé d'écrire des tests unitaires. Il s'agit d'une procédure permettant de vérifier le bon fonctionnement d'une partie précise du logiciel (appelée « unité » ou « module »). Reprenons l'exemple de la figure \ref{code:jscoffeecomparison}. Ce code décrit une fonction \texttt{square} dont le but est d'élever au carré l'entier qui est passé par paramètre. Le test unitaire le plus basique serait de vérifier que si l'on envoie le chiffre 3 dans cette fonction, cette dernière retourne le chiffre 9. L'objectif final est de "blinder" le code, c'est-à-dire vérifier qu'il se comporte comme le développeur l'a prévu. L'éciture de tests unitaires permet de trouver rapidement les erreurs au sein du code, de sécuriser la maintenance et finalement de documenter le code. Ils peuvent servir de complément à l'\gls{api}, il est très utile de lire les tests pour comprendre comment s'utilise une méthode. De plus, il est possible que la documentation ne soit plus à jour, mais les tests eux correspondent à la réalité de l'application. C'est d'ailleurs ce que m'avait conseillé mon maître de stage durant ma montée en compétences sur le logiciel Nikita.
+Ma première mission pour prendre en main Nikita était la migration d'une action de Nikita Arch\footnote{\href{https://github.com/adaltas/node-nikita-arch}{https://github.com/adaltas/node-nikita-arch}} vers Nikita dans le package \texttt{core}. Les actions contenues dans le dépôt Nikita Arch sont indépendantes et, de façon générale, plus simple que celles sur Nikita. J'ai ainsi pu me familiariser avec la logique et syntaxe du logiciel. Dans ce cas précis, je n'ai pas eu à écrire de nouveau code. Je devais prendre le code existant, le copier vers le package \texttt{core} et modifier certaines lignes relatives à l'environnement d'exécution. J'étais également chargé d'écrire des tests unitaires. Il s'agit d'une procédure permettant de vérifier le bon fonctionnement d'une partie précise du logiciel (appelée « unité » ou « module »). Reprenons l'exemple de la figure \ref{code:jscoffeecomparison}. Ce code décrit une fonction \texttt{square} dont le but est d'élever au carré l'entier qui est passé par paramètre. Le test unitaire le plus basique serait de vérifier que si l'on envoie le chiffre 3 dans cette fonction, cette dernière retourne le chiffre 9. L'objectif final est de "blinder" le code, c'est-à-dire vérifier qu'il se comporte comme le développeur l'a prévu. L'éciture de tests unitaires permet de trouver rapidement les erreurs au sein du code, de sécuriser la maintenance et finalement de documenter le code. Ils peuvent servir de complément à l'\gls{api}, il est très utile de lire les tests pour comprendre comment s'utilise une méthode. De plus, il est possible que la documentation ne soit plus à jour, mais les tests eux correspondent à la réalité de l'application. C'est d'ailleurs ce que m'avait conseillé mon maître de stage durant ma montée en compétences sur le logiciel Nikita.
 
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
