@@ -29,7 +29,7 @@
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 \definecolor{darkgray}{rgb}{.4,.4,.4}
 \definecolor{purple}{rgb}{0.65, 0.12, 0.82}
- 
+
 \lstset{ %
 	backgroundcolor=\color{white}, % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
 	basicstyle=\footnotesize, % the size of the fonts that are used for the code
@@ -225,12 +225,12 @@
 \begin{titlepage}
 \title{	\includegraphics[scale=0.4]{assets/img/logo-adaltas.png}\\[1 cm]
 		\normalsize \textsc{Rapport de stage}\\[0.8cm]
-		{Entreprise partenaire : \\Adaltas}\\[0.8 cm]
+		{Entreprise d'accueil : \\Adaltas}\\[0.8 cm]
 		\rule{\linewidth}{0.2 mm} \\[0.4 cm]
 		\LARGE \textbf{\uppercase{Mise en place d'une solution d'automatisation pour le déploiement de sysèmes Big Data}}
 		\rule{\linewidth}{0.2 mm}
 		}
-\author {\normalsize Auteur :\\	\normalsize Alexander Hoffmann - alexander@adaltas.com\\[0.5 cm]
+\author {\normalsize Auteur :\\	\normalsize Alexander Hoffmann - alex@ahff.dev\\[0.5 cm]
 		 \normalsize Maître de stage :\\	\normalsize David Worms - david@adaltas.com\\}
 \date{\normalsize \today}
 \end{titlepage}
@@ -378,11 +378,54 @@ Ces spécifications techniques sont nécessaires car les stagiaires sont amenés
 
 Cette partie décrit les activités réalisées dans le cadre du stage. La plupart d'entre elles ont été réalisées en parallèle. La description "chronologique" qui suit est donc très relative.
 
+\section{Présentation des outils utilisés}
+
+\subsection{vim}
+
+Qui dit développement d'application dit environnement de développement « intégré » (abrégé EDI en français ou IDE en anglais, pour integrated development environment). Un bon IDE permet d'augmenter la productivité des développeurs. Il comporte un éditeur de texte destiné à la programmation, des fonctions qui permettent, par pression sur un bouton, de démarrer le compilateur ou l'éditeur de liens ainsi qu'un débogueur en ligne, qui permet d'exécuter ligne par ligne le programme en cours de construction.
+
+Vim est un éditeur de texte directement inspiré de vi (un éditeur très répandu sur les systèmes d’exploitation de type Unix). Son nom signifie d’ailleurs Vi IMproved, que l’on peut traduire par « VI aMélioré ». A priori, Vim n'est pas un IDE mais un simple éditeur de texte. Cette affirmation serait vraie si Vim n'était pas autant personnalisable. En effet, l'ajout  d'extensions, ou la modification de son fichier de configuration en fait un environnement de développement optimal. L'avantage est qu'il n'est pas nécessaire de maîtriser plusieurs IDE, Vim suffit.
+
+Etant déjà que j'avais déjà quelques notions de Vim avant mon stage, j'ai été chargé de rédiger un tutoriel sur le site du cloud d'Adaltas. Cette introduction est destinée aux personnes n'ayant jamais utilisé Vim. Voici le \href{https://www.adaltas.cloud/en/docs/foundations/vim/}{lien} vers mon tutoriel.
+
+\subsection{git}
+
+Git est un outil de contrôle de version similaire à \href{https://en.wikipedia.org/wiki/Concurrent_Versions_System}{CVS}, \href{https://subversion.apache.org/}{Subversion} et \href{https://www.mercurial-scm.org/}{Mercurial}. Cette famille d'outils s'appelle Système de Contrôle de Version (SCV) ou Gestion du Contrôle des Sources (GCS). Un contrôle de version permet de garder une trace des modifications apportées à un ou plusieurs fichiers au fil du temps afin de pouvoir accéder ultérieurement à une version spécifique. Voici quelques exemples : un développeur veut garder une trace de l'évolution de son code ; un ingénieur DevOps veut déclencher des tests sur les changements publiés et déployer de nouvelles versions à partir de points d'accès bien définis de l'historique du logiciel ; un développeur web a besoin de stocker chaque version d'une image ou d'une mise en page ; un ingénieur infrastructure veut stocker et garder une trace de ses procédures de déploiement et des changements de configuration ; un Data Scientist veut enregistrer toutes ses expériences et les évolutions des fonctionnalités. Chez Adaltas, la procédure d'installation des systèmes \gls{arch} utilisée sur la majorité de nos ordinateurs portables est stockée et partagée sur un dépôt public.
+
 \section{Présentation de Nikita}
 
 Nikita est une librairie d’automatisation pour le déploiement de systèmes pour \gls{nodejs}. Le logiciel est développé en \gls{javascript}. Le développement a commencé lorsqu'Adaltas a déployé un cluster \gls{hadoop} pour l’un de ses clients en 2011. Les actions Nikita sont variées : créer un dossier, générer un fichier, initier un service systemd, ajouter une règle de pare-feu iptable, etc.
 
-Nikita est organisé comme un seul et unique dépôt multi-packages (monorepo) hébergé sur \gls{github}\footnote{\href{https://github.com/adaltas/node-nikita}{https://github.com/adaltas/node-nikita}}. Il comprend le moteur de base, les actions des utilisateurs et les fonctions utilitaires. Tous ces éléments sont associés à leurs tests unitaires. Lerna\footnote{\href{https://github.com/lerna/lerna}{https://github.com/lerna/lerna}} est utilisé pour diviser le projet en packages indépendants. Cela permet d'optimiser les besoins en temps et en espace, permettant un refactoring massif, une mise à jour et un enrichissement des fonctionnalités plus efficace. La figure \ref{code:example} représente un exemple d'une action Nikita.
+\begin{figure}[h]
+\begin{verbatim}
+CHANGELOG.md
+lerna.json
+LICENSE
+package.json
+packages
+  core
+  db
+  docker
+  engine
+  file
+  filetypes
+  ipa
+  java
+  krb5
+  ldap
+  lxd
+  nikita
+  service
+  tools
+README.md
+yarn.lock
+\end{verbatim}
+\centering
+\caption{Structure de fichiers Nikita}
+\label{fig:nikitaFileStructure}
+\end{figure}
+
+Nikita est organisé comme un seul et unique dépôt multi-packages (monorepo) hébergé sur \gls{github}\footnote{\href{https://github.com/adaltas/node-nikita}{https://github.com/adaltas/node-nikita}}. La figure \ref{fig:nikitaFileStructure} représente la structure du monorepo. Il comprend le moteur de base, les actions des utilisateurs et les fonctions utilitaires. Tous ces éléments sont associés à leurs tests unitaires. Lerna\footnote{\href{https://github.com/lerna/lerna}{https://github.com/lerna/lerna}} est utilisé pour diviser le projet en packages indépendants. Cela permet d'optimiser les besoins en temps et en espace, permettant un refactoring massif, une mise à jour et un enrichissement des fonctionnalités plus efficace. La figure \ref{code:example} représente un exemple d'une action Nikita.
 
 \begin{figure}[H]
 \begin{lstlisting}[language=JavaScript]
