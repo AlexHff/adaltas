@@ -392,6 +392,8 @@ Etant déjà que j'avais déjà quelques notions de Vim avant mon stage, j'ai é
 
 Git est un outil de contrôle de version similaire à \href{https://en.wikipedia.org/wiki/Concurrent_Versions_System}{CVS}, \href{https://subversion.apache.org/}{Subversion} et \href{https://www.mercurial-scm.org/}{Mercurial}. Cette famille d'outils s'appelle Système de Contrôle de Version (SCV) ou Gestion du Contrôle des Sources (GCS). Un contrôle de version permet de garder une trace des modifications apportées à un ou plusieurs fichiers au fil du temps afin de pouvoir accéder ultérieurement à une version spécifique. Voici quelques exemples : un développeur veut garder une trace de l'évolution de son code ; un ingénieur DevOps veut déclencher des tests sur les changements publiés et déployer de nouvelles versions à partir de points d'accès bien définis de l'historique du logiciel ; un développeur web a besoin de stocker chaque version d'une image ou d'une mise en page ; un ingénieur infrastructure veut stocker et garder une trace de ses procédures de déploiement et des changements de configuration ; un Data Scientist veut enregistrer toutes ses expériences et les évolutions des fonctionnalités. Chez Adaltas, la procédure d'installation des systèmes \gls{arch} utilisée sur la majorité de nos ordinateurs portables est stockée et partagée sur un dépôt public.
 
+\subsection{NodeJS}
+
 \section{Présentation de Nikita}
 
 Nikita est une librairie d’automatisation pour le déploiement de systèmes pour \gls{nodejs}. Le logiciel est développé en \gls{javascript}. Le développement a commencé lorsqu'Adaltas a déployé un cluster \gls{hadoop} pour l’un de ses clients en 2011. Les actions Nikita sont variées : créer un dossier, générer un fichier, initier un service systemd, ajouter une règle de pare-feu iptable, etc.
@@ -402,21 +404,21 @@ CHANGELOG.md
 lerna.json
 LICENSE
 package.json
-packages
-  core
-  db
-  docker
-  engine
-  file
-  filetypes
-  ipa
-  java
-  krb5
-  ldap
-  lxd
-  nikita
-  service
-  tools
+packages/
+  core/
+  db/
+  docker/
+  engine/
+  file/
+  filetypes/
+  ipa/
+  java/
+  krb5/
+  ldap/
+  lxd/
+  nikita/
+  service/
+  tools/
 README.md
 yarn.lock
 \end{verbatim}
@@ -484,6 +486,40 @@ console.log(b); // 4
 \gls{coffeescript} a une syntaxe très claire et se prête parfaitement à l'aspect déclaratif de Nikita. Somme toute, le code source ressemble à du \gls{yaml}, ce qui le rend beaucoup plus lisible tout en préservant les avantages d'un langage procédural tel que le \gls{javascript}. Un autre avantage de \gls{coffeescript} est qu'il permet d'intégrer la documentation liée à une action directement dans le code source.
 
 Ma première mission pour prendre en main Nikita était la migration d'une action de Nikita Arch\footnote{\href{https://github.com/adaltas/node-nikita-arch}{https://github.com/adaltas/node-nikita-arch}} vers Nikita dans le package \texttt{core}. Les actions contenues dans le dépôt Nikita Arch sont indépendantes et, de façon générale, plus simple que celles sur Nikita. J'ai ainsi pu me familiariser avec la logique et syntaxe du logiciel. Dans ce cas précis, je n'ai pas eu à écrire de nouveau code. Je devais prendre le code existant, le copier vers le package \texttt{core} et modifier certaines lignes relatives à l'environnement d'exécution. J'étais également chargé d'écrire des tests unitaires. Il s'agit d'une procédure permettant de vérifier le bon fonctionnement d'une partie précise du logiciel (appelée « unité » ou « module »). Reprenons l'exemple de la figure \ref{code:jscoffeecomparison}. Ce code décrit une fonction \texttt{square} dont le but est d'élever au carré l'entier qui est passé par paramètre. Le test unitaire le plus basique serait de vérifier que si l'on envoie le chiffre 3 dans cette fonction, cette dernière retourne le chiffre 9. L'objectif final est de "blinder" le code, c'est-à-dire vérifier qu'il se comporte comme le développeur l'a prévu. L'éciture de tests unitaires permet de trouver rapidement les erreurs au sein du code, de sécuriser la maintenance et finalement de documenter le code. Ils peuvent servir de complément à l'\gls{api}, il est très utile de lire les tests pour comprendre comment s'utilise une méthode. De plus, il est possible que la documentation ne soit plus à jour, mais les tests eux correspondent à la réalité de l'application. C'est d'ailleurs ce que m'avait conseillé mon maître de stage durant ma montée en compétences sur le logiciel Nikita.
+
+\section{Migration du package \texttt{file}}
+
+Comme défini précédemment, la migration du package \texttt{file} était ma mission principale au cours de ce stage. Par "migration", nous entendons le passage d'une partie du code d'une certaine version à une autre version. En l'occurence, \texttt{file} était une action contenue dans le package \texttt{core}. Ce dernier a disparu dans la nouvelle version de Nikita, il fallait donc déplacer toutes les actions le composant. Une grande partie du code avait déjà été migré avant mon arrivée chez Adaltas vers un nouveau package nommé \texttt{engine}. Ce dernier se différencie de l'ancienne version du logiciel de par la modification de l'implémentation du moteur de Nikita.
+
+\begin{figure}[h]
+\begin{verbatim}
+env/
+node_modules/
+package.json
+src/
+  cache.coffee.md
+  cson.coffee.md
+  download.coffee.md
+  index.coffee.md
+  json.coffee.md
+  properties/
+    index.coffee.md
+    read.coffee.md
+  register.coffee
+  render.coffee.md
+  touch.coffee.md
+  upload.coffee.md
+  utils/
+    curl.coffee
+    diff.coffee.md
+    index.coffee
+test/
+test.coffee
+\end{verbatim}
+\centering
+\caption{Structure de fichiers du package file}
+\label{fig:fileStructure}
+\end{figure}
 
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
